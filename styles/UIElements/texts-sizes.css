@@ -3,6 +3,10 @@ p, h1, h2, h3, h4 {
     color: #1B286B;
 }
 
+button {
+    font-family: 'K2D', sans-serif;
+}
+
 .page-title {
     font-size: 24px;
     text-transform: uppercase;
@@ -18,8 +22,14 @@ p, h1, h2, h3, h4 {
     text-align: center;
 }
 
+
+.window-tiltle_text-left {
+    text-align: left;
+}
+
 .window-subtitle {
     font-size: 24px;
+    font-weight: 500;
 
 }
 
@@ -30,6 +40,7 @@ p, h1, h2, h3, h4 {
 .window-text_sm {
     font-size: 12px; 
     line-height: 15.6px;
+    font-weight: 500;
 }
 
 .window-text_m {
