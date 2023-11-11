@@ -1,0 +1,34 @@
+.page-title {
+    font-size: 24px;
+    text-transform: uppercase;
+    color: black;
+}
+
+.page-subtitle {
+    color: black;
+    font-size: 14px;
+}
+
+.window-title {
+    font-size: 32px;
+}
+
+.window-subtitle {
+    font-size: 24px;
+
+}
+
+.window-text {
+
+}
+
+.window-text_sm {
+    font-size: 20px; 
+}
+
+.window-text_m {
+
+}
+
+
+
