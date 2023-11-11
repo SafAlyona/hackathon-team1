@@ -3,3 +3,7 @@
 @import url('./UIElements/reset-classes.css');
 @import url('./UIElements/containers/game-containers.css');
 @import url('../vendor/fonts/k2d-font/k2d-font.css');
+@import url('./UIElements/icons/parents-icons.css');
+@import url('./UIElements/icons/bird-icon.css');
+@import url('./UIElements/interactive/interactive.css');
+

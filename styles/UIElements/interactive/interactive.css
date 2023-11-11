@@ -1,0 +1,9 @@
+.base-button {
+    padding-block: 5px;
+    padding-inline: 18px;
+    border-radius: 20px;
+    color: white;
+    background-color: #1B286B;
+    font-size: 10px;
+    border: none;
+}
