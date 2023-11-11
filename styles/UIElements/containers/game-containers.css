@@ -1,0 +1,22 @@
+.canvas-container {
+    display: flex;
+    border: 1px solid green;
+    align-self: center;
+    width: 600px;
+    height: 600px;
+    position: relative;
+}
+
+.info-container {
+    display: flex;
+    border: 2px solid pink;
+    align-self: center;
+    position: absolute;
+    flex-direction: column;
+    width:540px;
+    height: 320px;
+    top: 15%;
+    gap: 15px;
+    left: 5%;
+
+}
