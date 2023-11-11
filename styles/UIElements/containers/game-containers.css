@@ -8,15 +8,22 @@
 }
 
 .info-container {
+    box-sizing: border-box;
     display: flex;
-    border: 2px solid pink;
+    border-radius: 15px;
+    background-color: #96C6ED;
     align-self: center;
     position: absolute;
     flex-direction: column;
-    width:540px;
-    height: 320px;
+    width: 400px;
+    height: 400px;
     top: 15%;
     gap: 15px;
-    left: 5%;
-
+    left: 16.6%;
+    background-image: url('../../../vendor/icons/cloud-top-icon.png'), url('../../../vendor/icons/cloud-bottom-icon.svg');
+    background-position: 100% 10%, 0% 80%;
+    background-repeat: no-repeat;
+    padding-inline: 38px;
+    padding-top: 30px;
+    padding-bottom: 16px;
 }
