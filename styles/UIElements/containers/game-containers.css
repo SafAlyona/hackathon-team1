@@ -1,0 +1,50 @@
+.canvas-container {
+    display: flex;
+    border: 1px solid green;
+    align-self: center;
+    width: 600px;
+    height: 600px;
+    position: relative;
+}
+
+.info-container {
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 15px;
+    background-color: #96C6ED;
+    align-self: center;
+    position: absolute;
+    flex-direction: column;
+    width: 400px;
+    height: 400px;
+    top: 15%;
+    gap: 15px;
+    left: 16.6%;
+    background-image: url('../../../vendor/icons/cloud-top-icon.png'), url('../../../vendor/icons/cloud-bottom-icon.svg');
+    background-position: 100% 10%, 0% 80%;
+    background-repeat: no-repeat;
+    padding-inline: 38px;
+    padding-top: 30px;
+    padding-bottom: 16px;
+}
+
+.icons-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 35px;
+    align-self: center;
+}
+
+.window-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ready-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    align-self: flex-end;
+}
