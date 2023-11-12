@@ -175,8 +175,8 @@ function drawBody(x, y, moveSide, amt, size, isChild = false) {
    if (isChild) {
       let capCol = lerpColor(color("rgb(101,112,255)"), color("rgb(255,95,95)"), rand / 10000);
       let capEndCol = lerpColor(color("rgb(85,110,225)"), color("rgb(227,87,87)"), rand / 10000);
-      let fanCol = lerpColor(color("rgb(85,110,225)"), color("rgb(227,87,87)"), 1-rand / 10000);
-      let fan2Col = lerpColor(color("rgb(101,112,255)"), color("rgb(255,95,95)"), 1-rand / 10000);
+      let fanCol = lerpColor(color("rgb(85,110,225)"), color("rgb(227,87,87)"), 1 - rand / 10000);
+      let fan2Col = lerpColor(color("rgb(101,112,255)"), color("rgb(255,95,95)"), 1 - rand / 10000);
       stroke(capCol);
       strokeWeight(size * 0.15);
       line(shX - size * 0.55, shY - size * 0.2, shX - size * 0.3, shY - size * 0.22);
@@ -380,14 +380,21 @@ let globalCellID = 0;
 function drawFlower(x, y, r) {
    push()
    let hr = r * 0.75;
+   let n = noise(x, y);
+   let a = map(n, 0, 1, 0, PI);
+   let nr = map(n, 0, 1, 0.75, 1);
+
    noStroke();
    fill(0, 150, 0);
-   circle(x, y, r * 1.5);
-   fill(250, 200, 250);
-   circle(x + hr, y, r);
-   circle(x - hr, y, r);
-   circle(x, y + hr, r);
-   circle(x, y - hr, r);
+   circle(x, y, r * 1.5 * nr);
+   let flowerCol = lerpColor(color("rgb(255,185,228)"), color("rgb(219,166,252)"), n);
+   for (let i = 0; i < 5; i++) {
+      fill(flowerCol);
+      let a2 = map(i, 0, 5, 0, TWO_PI) + a;
+      let cosa = cos(a2) * hr;
+      let sina = sin(a2) * hr;
+      circle(x + sina, y + cosa, r * nr);
+   }
    pop()
 }
 
