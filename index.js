@@ -14,7 +14,7 @@ function Child() {
 function Parent() {
    this.cell = maze.endCell;
    this.prevCell = this.cell;
-   this.moveSide = 0;
+   this.moveSide = 2;
 
    // Скорость ходьбы родителя. 10 означает одна клетка за 10 кадров
    this.subStepsForOneMove = 20;
@@ -162,7 +162,7 @@ function drawBody(x, y, moveSide, amt, size, isChild = false) {
    fill(bodyCol);
    circle(shX, shY, size);
 
-   if (this.moveSide !== 0) {
+   if (moveSide !== 0) {
       stroke(shoesCol);
       strokeWeight(size * 0.05);
       strokeCap(ROUND);
@@ -440,7 +440,7 @@ function Cell(x, y) {
       push();
       let size = maze.cellPixelSize;
       let halfSize = size / 2;
-      stroke(0, 170, 0);
+      stroke(70, 170, 0);
       strokeWeight(size / 2);
       strokeCap(ROUND);
       noFill();
