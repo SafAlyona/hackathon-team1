@@ -68,11 +68,11 @@ button {
 .dropbtn {
     color: white;
     background-color: #1B286B;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    border-radius: 15px;
+    border-radius: 15px;
     padding-block: 5px;
     padding-inline: 18px;
-    font-size: 16px;
+    font-size: 12px;
     border: none;
     cursor: pointer;
   }
@@ -83,6 +83,8 @@ button {
     width: 110px;
     display: inline-block;
     width: min-content;
+		margin-left: 45%;
+		transform: translateY(-20px);
   }
   
   /* Dropdown Content (Hidden by Default) */
@@ -96,6 +98,11 @@ button {
   }
   
   /* Show the dropdown menu on hover */
+.dropdown:hover .dropbtn {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
 .dropdown:hover .dropdown-content {
 	display: block;
 }
@@ -110,12 +117,13 @@ button {
 .dropdown-option {
 	text-align: center;
 	color: white;
-    display: block;
+  display: block;
 	padding: 5px 16px;
 	text-decoration: none;
-	font-size: 16px;
+	font-size:12px;
 	border: none;
 	cursor: pointer;
+	font-family: 'K2D', sans-serif;;
 }
 
  /* Change color of dropdown links on hover */
