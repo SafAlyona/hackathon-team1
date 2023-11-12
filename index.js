@@ -29,6 +29,7 @@ function Parent() {
          this.cell = tryCell;
          this.subSteps = 0;
          currentStepCount++;
+         checkIfGameWon();
       }
    }
 
@@ -125,7 +126,7 @@ function Maze(cellSize, pixelSize) {
 
       // Размер цветка. Задается относительно размера клетки
       let flowerRelativeSize = 0.15;
-      let flowerPixelSize = this.cellPixelSize / flowerRelativeSize;
+      let flowerPixelSize = this.cellPixelSize * flowerRelativeSize;
 
       let actualSmoothLen = map(lenToDraw,
          path.length - smoothEndLen, path.length,
@@ -302,6 +303,8 @@ function Cell(x, y) {
    }
 }
 
+let difficulty = 0;
+
 function play() {
    // это собственно частота кадров
    frameRate(20);
@@ -311,9 +314,14 @@ function play() {
    currentStepCount = 0;
    gameStart = true;
 
-   maze = new Maze(15, 600);
+   let cellSize = 7;
+   if (difficulty === 0) cellSize = 7;
+   if (difficulty === 1) cellSize = 11;
+   if (difficulty === 2) cellSize = 15;
 
-   console.log(maze)
+   maze = new Maze(cellSize, 600);
+
+   //console.log(maze)
 
    maze.fill();
    maze.generate();
@@ -346,7 +354,10 @@ function updateScene() {
 function draw() {
    if (!gameStart) return;
    updateScene();
-   if (gameOver && maze.pathVisibleAmt >= 1.1) frameRate(0);
+   if (gameOver && maze.pathVisibleAmt >= 1.1) {
+      frameRate(0);
+      newGame();
+   }
 }
 
 let gameStart = false;
@@ -373,19 +384,15 @@ function keyPressed() {
       }
       if (keyCode === UP_ARROW) {
          parent.tryMove(0);
-         checkIfGameWon();
       }
       if (keyCode === RIGHT_ARROW) {
          parent.tryMove(1);
-         checkIfGameWon();
       }
       if (keyCode === DOWN_ARROW) {
          parent.tryMove(2);
-         checkIfGameWon();
       }
       if (keyCode === LEFT_ARROW) {
          parent.tryMove(3);
-         checkIfGameWon();
       }
    }
    //console.log(keyCode);
@@ -454,14 +461,15 @@ function closeMenu() {
 function handleRestartCurrent() {
    restart();
    closeMenu();
-   startTime = new Date.getTime();
+   startTime = new Date().getTime();
 }
 
 function handleRestartFull() {
    closeMenu();
-   setTimeout(() => {
-      newGame();
-   }, 2000)
+   // setTimeout(() => {
+   //    newGame();
+   // }, 2000);
+   gameOver = true;
    maze.pathShown = true;
 }
 
