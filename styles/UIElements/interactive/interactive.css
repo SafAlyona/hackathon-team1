@@ -101,7 +101,6 @@ button {
 }
 
 .dropdown .dropdown-content {
-	display: block;
 	color: white;
 	background-color: #1B286B;
 	border-bottom-left-radius: 15px;
@@ -111,9 +110,9 @@ button {
 .dropdown-option {
 	text-align: center;
 	color: white;
-	padding: 12px 16px;
+    display: block;
+	padding: 5px 16px;
 	text-decoration: none;
-	display: block;
 	font-size: 16px;
 	border: none;
 	cursor: pointer;
@@ -123,6 +122,12 @@ button {
 .dropdown-option:hover {
 	background-color: #f1f1f1;
 	color: #1B286B;
+    
+}
+
+.dropdown-option:hover:last-of-type {
+    border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
 }
   
   /* Change the background color of the dropdown button when the dropdown content is shown */
