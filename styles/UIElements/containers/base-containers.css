@@ -3,6 +3,12 @@
     flex-direction: column;
     width: 100%;
     justify-content: center;
+    background-color: #F2FBFF;
+    background-image: url('../../../vendor/icons/cloud-top-icon.png'), url('../../../vendor/icons/cloud-bottom-icon.svg'), url('../../../vendor/icons/cloud-top-icon.png');
+    background-position: 100% 10%, 0% 80%, 100% 100%;
+    padding-block: 116px;
+    background-repeat: no-repeat;
+    background-size: 20% 40%, 20% 40%, 20% 40%;
 }
 
 .header {
@@ -28,4 +34,8 @@
 	align-items: center;
 	align-content: center;
 	flex-wrap: wrap;
+}
+
+#maze {
+    z-index: 0;
 }
