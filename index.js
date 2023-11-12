@@ -1,6 +1,7 @@
 let cnv;
 let maze, child, parent;
 
+// сидит ждет
 function Child() {
    this.cell = maze.initCell;
 
@@ -13,9 +14,13 @@ function Child() {
 function Parent() {
    this.cell = maze.endCell;
    this.prevCell = this.cell;
+
+   // Скорость ходьбы родителя. 10 означает одна клетка за 10 кадров
    this.subStepsForOneMove = 10;
+
    this.subSteps = this.subStepsForOneMove;
 
+   // Попытка сделать шаг. Получает сторону, в какую шагать, и сверяет с connected текущей ячейки
    this.tryMove = (side) => {
       let tryCell = this.cell.connected[side];
 
@@ -23,7 +28,7 @@ function Parent() {
          this.prevCell = this.cell;
          this.cell = tryCell;
          this.subSteps = 0;
-         stepCount++;
+         currentStepCount++;
       }
    }
 
@@ -56,7 +61,7 @@ function Maze(cellSize, pixelSize) {
    this.endCell = undefined;
    this.way = [];
    this.pathVisibleAmt = 0;
-   this.pathShown = false;
+   this.pathShown = false; //у меня редактор помечает ее как не используемую, но она юзается
 
    this.getCell = (...args) => {
       if (args.length === 1) {
@@ -79,9 +84,17 @@ function Maze(cellSize, pixelSize) {
       }
    }
 
+   // отрисовка лабиринта и его анимация
    this.draw = () => {
+
+      // Как долго длится анимация. 36 - 36 кадров
       let duration = 36;
+
+      // насколько выражен центр относительно краев в процессе появления
+      // 1 - перепад, при котором когда в центре полоска полная - в углу она половинная.
       let difference = 4;
+
+      // Сюда не лезть, я настраивал это в помутненном сознании и хз, как именно работает формула
       for (let i = 0; i < this.cellSize; i++) {
          for (let j = 0; j < this.cellSize; j++) {
             let c = this.getCell(i, j);
@@ -101,21 +114,33 @@ function Maze(cellSize, pixelSize) {
       }
    }
 
+   //Тут рисуется анимация пути
    this.drawPath = () => {
       let path = this.way;
       let lenToDraw = path.length;
       if (this.pathVisibleAmt < 1) lenToDraw = path.length * this.pathVisibleAmt;
+
+      // кол-во клеток от кончика пути, на которых цветки уменьшенные
       let smoothEndLen = 5;
+
+      // Размер цветка. Задается относительно размера клетки
+      let flowerRelativeSize = 0.15;
+      let flowerPixelSize = this.cellPixelSize / flowerRelativeSize;
+
       let actualSmoothLen = map(lenToDraw,
          path.length - smoothEndLen, path.length,
          smoothEndLen, 0, true);
-      for (let i = 0; i < floor(lenToDraw - 1); i += 0.47) {
+
+      //Плотность появления цветков. 0.5 это 2 цветка в клетке.
+      let flowerSpawnDensity = 0.47;
+
+      for (let i = 0; i < floor(lenToDraw - 1); i += flowerSpawnDensity) {
 
          let n = noise(i);
          let a = map(n, 0, 1, 0, TWO_PI);
          let sinA = sin(a);
          let cosA = cos(a);
-         let r = map(i, lenToDraw - actualSmoothLen, lenToDraw, this.cellPixelSize / 6, 1, true);
+         let r = map(i, lenToDraw - actualSmoothLen, lenToDraw, flowerPixelSize, 1, true);
 
          //console.log(lenToDraw, i)
          let cellPos = path[floor(i)].pos;
@@ -123,27 +148,14 @@ function Maze(cellSize, pixelSize) {
          let lerpPoint = lerpPos(cellPos, cellNextPos, fract(i));
          drawFlower(lerpPoint.x + sinA * 2, lerpPoint.y + cosA * 2, r);
       }
-      // push();
-      // noFill();
-      // beginShape();
-      // let start = path[0].pos;
-      // curveVertex(start.x, start.y);
-      // curveTightness(0.25);
-      // for (let i = 0; i < lenToDraw - 1; i++) {
-      //    let cellPos = path[i].pos;
-      //    curveVertex(cellPos.x, cellPos.y);
-      // }
-      // let anchorIndex = lenToDraw === path.length ? lenToDraw - 1 : lenToDraw
-      // let end = path.at(lenToDraw - 1).pos;
-      // let endAnchor = path.at(anchorIndex).pos;
-      // curveVertex(end.x, end.y);
-      // curveVertex(endAnchor.x, endAnchor.y);
-      // endShape();
-      // pop();
+
+      // Инкремент приращения пути от 0 до 1.
+      // 0.01 означает 100% за 100 кадров.
       this.pathVisibleAmt += 0.01;
    }
 
-   this.getValidNears = (cell, checkVisited = true) => {
+   //получает точку, возвращает массив с соседями, которые еще не посещены генератором
+   this.getValidNears = (cell) => {
       let x = cell.gridPos.x;
       let y = cell.gridPos.y;
       let around = [
@@ -159,13 +171,15 @@ function Maze(cellSize, pixelSize) {
              around[l].x < this.cellSize &&
              around[l].y > -1 &&
              around[l].y < this.cellSize) {
-            if (checkVisited && this.getCell(around[l]).visited) continue;
+            if (this.getCell(around[l]).visited) continue;
             valid.push({...around[l], cell: this.getCell(around[l])});
          }
       }
       return valid;
    }
 
+   // это собственно генератор, его не трогать.
+   // в конце генерации сохраняет минимальное количество шагов в глобалку.
    this.generate = () => {
       let x = floor(this.cellSize / 2);
       let y = floor(this.cellSize / 2);
@@ -203,6 +217,7 @@ function Maze(cellSize, pixelSize) {
          }
       }
       this.way.reverse();
+      minimalStepCount = this.way.length;
    }
 }
 
@@ -223,36 +238,41 @@ function drawFlower(x, y, r) {
    pop()
 }
 
-function bubbleWall(p1, p2, thick = 5) {
-   let amt = 0;
-   let den = 4;
-   let scale = 0.0001;
-   let time = frameCount / 10;
-   for (let i = 1; i < den - 1; i++) {
-      amt = constrain(i / den, 0, 1);
-      let pos = lerpPos(p1, p2, amt);
-
-      let n = noise(pos.x * scale, pos.y * scale);
-      let n2 = noise(time + pos.x * scale, pos.y * scale);
-      let r = map(n, 0, 1, thick * 0.75, thick);
-      let r2 = map(n2, 0, 1, 0, TWO_PI);
-      let c = cos(r2);
-      let s = sin(r2);
-
-      stroke(0, 150, 0);
-      strokeWeight(r);
-      circle(pos.x + s, pos.y + c, 1);
-   }
-}
+// function bubbleWall(p1, p2, thick = 5) {
+//    let amt = 0;
+//    let den = 4;
+//    let scale = 0.0001;
+//    let time = frameCount / 10;
+//    for (let i = 1; i < den - 1; i++) {
+//       amt = constrain(i / den, 0, 1);
+//       let pos = lerpPos(p1, p2, amt);
+//
+//       let n = noise(pos.x * scale, pos.y * scale);
+//       let n2 = noise(time + pos.x * scale, pos.y * scale);
+//       let r = map(n, 0, 1, thick * 0.75, thick);
+//       let r2 = map(n2, 0, 1, 0, TWO_PI);
+//       let c = cos(r2);
+//       let s = sin(r2);
+//
+//       stroke(0, 150, 0);
+//       strokeWeight(r);
+//       circle(pos.x + s, pos.y + c, 1);
+//    }
+// }
 
 function Cell(x, y) {
    this.ID = globalCellID++;
+
+   // позиция в массиве
    this.gridPos = {x: x, y: y};
-   //координаты необходимо инвертировать, хз почему
+
+   //Позиция на канвасе в пикселях. Координаты необходимо инвертировать, т.е [y,x] - это правильно. Хз почему
    this.pos = {
       y: maze.cellPixelSize * (x + 0.5),
       x: maze.cellPixelSize * (y + 0.5)
    }
+   //Это список соседей точки. В нем либо 0, если стена, либо ссылка на клетку-соседа.
+   //Массив ориентирован как [верх, право, низ, лево].
    this.connected = [0, 0, 0, 0];
    this.visited = false;
 
@@ -283,10 +303,12 @@ function Cell(x, y) {
 }
 
 function play() {
+   // это собственно частота кадров
    frameRate(20);
+   // это внутренняя переменная p5.js, считает кол-во кадров
    frameCount = 0;
    globalCellID = 0;
-   stepCount = 0;
+   currentStepCount = 0;
    gameStart = true;
 
    maze = new Maze(15, 600);
@@ -299,13 +321,13 @@ function play() {
    parent = new Parent();
    child = new Child();
 
-   resizeCanvas(maze.pixelSize,maze.pixelSize, false);
+   resizeCanvas(maze.pixelSize, maze.pixelSize, false);
    updateScene();
 }
 
 function restart() {
    parent = new Parent();
-   stepCount = 0;
+   currentStepCount = 0;
 }
 
 function setup() {
@@ -329,20 +351,23 @@ function draw() {
 
 let gameStart = false;
 let gameOver = false;
-let stepCount = 0;
+let currentStepCount = 0; //это можно выводить на экран как количество сделанных ходов
+let minimalStepCount;
 
 function keyPressed() {
    if (frameRate() === 0) return;
-   if (keyCode === 83) { //S
+   if (keyCode === 83) { //S - это старт новой игры, т.е генерация заново, всё вообще в нули.
       gameOver = false;
       play();
    }
-   if (keyCode === 88) { //X
+   if (keyCode === 88) { //X - это прекращение текущей игры. Рисует цветочки к ребенку и завершает отрисовку.
       gameOver = true;
       maze.pathShown = true;
    }
    if (!gameOver) {
-      if (keyCode === 82) { //R
+      //R - это рестарт, его можно сделать если игра еще не
+      // завершена, просто возвращает родителя на исходную
+      if (keyCode === 82) {
          restart();
       }
       if (keyCode === UP_ARROW) {
@@ -358,5 +383,5 @@ function keyPressed() {
          parent.tryMove(3);
       }
    }
-   console.log(keyCode);
+   //console.log(keyCode);
 }
