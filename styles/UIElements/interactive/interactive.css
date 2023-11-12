@@ -1,3 +1,9 @@
+button {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+
 .base-button {
     padding-block: 5px;
     padding-inline: 18px;
@@ -8,6 +14,10 @@
     border: none;
     height: min-content;
     align-self: flex-end;
+}
+
+.base-button:hover {
+    background-color: #1B286BD9;
 }
 
 .close-button {
@@ -22,7 +32,10 @@
     background-color: transparent;
     background-size: cover;
     background-repeat: no-repeat;
+}
 
+.close-button:hover {
+    scale: 1.1;
 }
 
 .open-menu-button {
@@ -37,6 +50,10 @@
     border: none;
     background-color: transparent;
     align-items: center;
+}
+
+.open-menu-button:hover  p {
+    color: #1B286BD9;
 }
 
 .open-menu-button__icon {
