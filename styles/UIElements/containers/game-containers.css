@@ -1,6 +1,7 @@
 .canvas-container {
     display: flex;
-    border: 1px solid green;
+    border: 1px solid black;
+    background-color: white;
     align-self: center;
     width: 600px;
     height: 600px;
@@ -8,6 +9,7 @@
 }
 
 .info-container {
+    z-index: 1;
     box-sizing: border-box;
     display: flex;
     border-radius: 15px;
@@ -26,6 +28,13 @@
     padding-inline: 38px;
     padding-top: 30px;
     padding-bottom: 16px;
+    justify-content: space-between;
+}
+
+.info-container_win {
+    background-image: url('../../../vendor/icons/cloud-top-icon.png'), url('../../../vendor/icons/cloud-bottom-icon.svg'), url('../../../vendor/icons/win.svg');
+    background-position: 100% 10%, 0% 80%, 100% 90%;
+    background-repeat: no-repeat;
 }
 
 .icons-wrapper {
@@ -47,4 +56,50 @@
     align-items: center;
     width: fit-content;
     align-self: flex-end;
+}
+
+.two-button-container {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    justify-content: flex-end;
+}
+
+.no-show {
+    display: none;
+}
+
+.show {
+    display: flex;
+}
+
+.statictic-text {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    align-items: center;
+}
+
+.statictic-text::before {
+    content: '';
+    display: flex;
+    width: 20px;
+    height: 20px;
+    left: -5px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transform: translateY(-10%);
+}
+
+.statictic-text_time::before {
+    background-image: url('../../../vendor/icons/timer.svg')
+}
+.statictic-text_current-steps::before {
+    background-image: url('../../../vendor/icons/footstep.svg')
+}
+.statictic-text_ideal-steps::before {
+    background-image: url('../../../vendor/icons/target.svg')
 }
