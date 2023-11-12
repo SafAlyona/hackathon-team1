@@ -6,4 +6,44 @@
     background-color: #1B286B;
     font-size: 10px;
     border: none;
+    height: min-content;
+    align-self: flex-end;
+}
+
+.close-button {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    border: none;
+    background-image: url('../../../vendor/icons/close.svg');
+    background-color: transparent;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+.open-menu-button {
+    flex-direction: row;
+    color: #1B286B;
+    gap: 5px;
+    font-size: 16px;
+    font-weight: 700;
+    position: absolute;
+    top: -28px;
+    right: 5px;
+    border: none;
+    background-color: transparent;
+    align-items: center;
+}
+
+.open-menu-button__icon {
+    display: flex;
+    width: 21px;
+    height: 21px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../../vendor/icons/menu.svg');
 }

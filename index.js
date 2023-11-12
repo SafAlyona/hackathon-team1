@@ -363,6 +363,7 @@ function keyPressed() {
    if (keyCode === 88) { //X - это прекращение текущей игры. Рисует цветочки к ребенку и завершает отрисовку.
       gameOver = true;
       maze.pathShown = true;
+      showStats();
    }
    if (!gameOver) {
       //R - это рестарт, его можно сделать если игра еще не
@@ -372,16 +373,124 @@ function keyPressed() {
       }
       if (keyCode === UP_ARROW) {
          parent.tryMove(0);
+         checkIfGameWon();
       }
       if (keyCode === RIGHT_ARROW) {
          parent.tryMove(1);
+         checkIfGameWon();
       }
       if (keyCode === DOWN_ARROW) {
          parent.tryMove(2);
+         checkIfGameWon();
       }
       if (keyCode === LEFT_ARROW) {
          parent.tryMove(3);
+         checkIfGameWon();
       }
    }
    //console.log(keyCode);
 }
+
+let startTime;
+let endTime;
+
+function checkIfGameWon() {
+   if (parent.cell.ID === child.cell.ID) {
+      gameWon()
+   }
+}
+
+function gameWon() {
+   gameOver = true;
+   WinWindow.classList.remove('no-show');
+   hideMenuButton();
+   showStats();
+
+}
+
+function newGame() {
+   gameOver = false;
+   play();
+   startTime = new Date().getTime();
+}
+
+function handleReadyFrontPageClick() {
+   newGame();
+   showMenuButton();
+   InfoFrontPage.classList.add('no-show')
+}
+
+
+function showStats() {
+   statStepsIdeal.innerText = minimalStepCount;
+   statStepsCurrent.innerText = currentStepCount + 1;
+   endTime = new Date().getTime();
+   const Time = new Date(endTime - startTime)
+   const Minutes = Time.getMinutes();
+   const Seconds = Time.getSeconds();
+   statTime.innerText = `${Minutes}:${Seconds}`
+}
+
+function hideMenuButton () {
+   MenuButton.classList.add('no-show')
+   MenuButton.classList.remove('show')
+   MenuButton.removeEventListener('click', openMenu)
+}
+
+function showMenuButton() {
+   MenuButton.classList.remove('no-show')
+   MenuButton.classList.add('show')
+   MenuButton.addEventListener('click', openMenu)
+}
+
+function openMenu() {
+   Menu.classList.remove('no-show')
+}
+
+function closeMenu() {
+   Menu.classList.add('no-show')
+}
+
+function handleRestartCurrent() {
+   restart();
+   closeMenu();
+   startTime = new Date.getTime();
+}
+
+function handleRestartFull() {
+   closeMenu();
+   setTimeout(() => {
+      newGame();
+   }, 2000)
+   maze.pathShown = true;
+}
+
+function handleRestartWin () {
+   WinWindow.classList.add('no-show')
+   InfoFrontPage.classList.remove('no-show')
+}
+
+function addListenersOnMenuButtons() {
+   RestartCurrentButton.addEventListener('click', handleRestartCurrent)
+   RestartFullButton.addEventListener('click', handleRestartFull)
+   AfterWinRestartButton.addEventListener('click', handleRestartWin)
+   CloseMenuButton.addEventListener('click', closeMenu)
+}
+
+// объявление переменных связанных с DOM
+const statTime = document.querySelector('.statictic-text_time span')
+const statStepsCurrent = document.querySelector('.statictic-text_current-steps span')
+const statStepsIdeal = document.querySelector('.statictic-text_ideal-steps span')
+const Menu = document.getElementById('info-container-in-game-settings')
+const MenuButton = document.querySelector('.open-menu-button')
+const CloseMenuButton = document.querySelector('.close-button_menu')
+const WinWindow = document.querySelector('.info-container_win')
+const AfterWinRestartButton = document.getElementById('after-win-restart-button')
+const ReadyButtonFrontPage = document.getElementById('button-start-front-page')
+const RestartFullButton = document.getElementById('button-restart-full')
+const RestartCurrentButton = document.getElementById('button-restart-current')
+const InfoFrontPage = document.getElementById('info-container-front-page')
+
+ReadyButtonFrontPage.addEventListener('click', handleReadyFrontPageClick)
+addListenersOnMenuButtons();
+
